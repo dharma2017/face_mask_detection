@@ -70,13 +70,13 @@ def load_model_and_config():
     try:
         # Try different model file formats and locations
         model_paths = [
-            'models/deployment/face_mask_detector_streamlit.h5',
-            'models/deployment/face_mask_detector_best.h5',
-            'models/deployment/face_mask_detector_best.keras',
-            'models/deployment/face_mask_detector_savedmodel',
+            'face_mask_detector_streamlit.h5'
+            # 'models/deployment/face_mask_detector_best.h5',
+            # 'models/deployment/face_mask_detector_best.keras',
+            # 'models/deployment/face_mask_detector_savedmodel',
         ]
         
-        config_path = 'models/deployment/model_config.json'
+        config_path = 'model_config.json'
         
         model = None
         loaded_path = None
