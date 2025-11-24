@@ -1,0 +1,17 @@
+{
+    "model_name": "MobileNetV2 (Fine-tuned)",
+    "input_size": [
+        128,
+        128
+    ],
+    "test_accuracy": 0.9902912621359223,
+    "precision": 0.9928057553956835,
+    "recall": 0.9874776386404294,
+    "f1_score": 0.9901345291479821,
+    "classes": {
+        "0": "Without Mask",
+        "1": "With Mask"
+    },
+    "preprocessing": "normalize to [0,1]",
+    "trained_date": "2025-11-24 10:24:07"
+}
