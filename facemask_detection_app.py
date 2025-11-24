@@ -5,7 +5,15 @@ Created using trained deep learning model
 
 import streamlit as st
 import numpy as np
-import cv2
+
+# Try to import cv2 with fallback
+try:
+    import cv2
+    CV2_AVAILABLE = True
+except ImportError:
+    CV2_AVAILABLE = False
+    st.warning("⚠️ OpenCV not available. Using PIL for image processing.")
+
 from PIL import Image
 import json
 import os
@@ -70,13 +78,13 @@ def load_model_and_config():
     try:
         # Try different model file formats and locations
         model_paths = [
-            'face_mask_detector_streamlit.h5'
-            # 'models/deployment/face_mask_detector_best.h5',
-            # 'models/deployment/face_mask_detector_best.keras',
-            # 'models/deployment/face_mask_detector_savedmodel',
+            'models/deployment/face_mask_detector_streamlit.h5',
+            'models/deployment/face_mask_detector_best.h5',
+            'models/deployment/face_mask_detector_best.keras',
+            'models/deployment/face_mask_detector_savedmodel',
         ]
         
-        config_path = 'model_config.json'
+        config_path = 'models/deployment/model_config.json'
         
         model = None
         loaded_path = None
@@ -159,12 +167,26 @@ def preprocess_image(image, target_size):
     
     # Convert to RGB if needed
     if len(img_array.shape) == 2:  # Grayscale
-        img_array = cv2.cvtColor(img_array, cv2.COLOR_GRAY2RGB)
+        if CV2_AVAILABLE:
+            img_array = cv2.cvtColor(img_array, cv2.COLOR_GRAY2RGB)
+        else:
+            # Use PIL for conversion
+            img_array = np.stack([img_array] * 3, axis=-1)
     elif img_array.shape[2] == 4:  # RGBA
-        img_array = cv2.cvtColor(img_array, cv2.COLOR_RGBA2RGB)
+        if CV2_AVAILABLE:
+            img_array = cv2.cvtColor(img_array, cv2.COLOR_RGBA2RGB)
+        else:
+            # Remove alpha channel
+            img_array = img_array[:, :, :3]
     
     # Resize to target size
-    img_resized = cv2.resize(img_array, target_size)
+    if CV2_AVAILABLE:
+        img_resized = cv2.resize(img_array, target_size)
+    else:
+        # Use PIL for resizing
+        pil_img = Image.fromarray(img_array)
+        pil_img = pil_img.resize(target_size, Image.LANCZOS)
+        img_resized = np.array(pil_img)
     
     # Normalize to [0, 1]
     img_normalized = img_resized.astype('float32') / 255.0

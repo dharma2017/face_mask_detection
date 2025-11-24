@@ -7,7 +7,7 @@ tensorflow
 keras-tuner
 
 # Image Processing
-opencv-python
+opencv-python-headless
 Pillow
 
 # Machine Learning
