@@ -1,0 +1,27 @@
+# Core Dependencies
+numpy
+pandas
+
+# Deep Learning
+tensorflow
+keras-tuner
+
+# Image Processing
+opencv-python
+Pillow
+
+# Machine Learning
+scikit-learn
+scipy
+
+# Visualization
+matplotlib
+seaborn
+plotly
+
+# Web Application
+streamlit
+
+# Utilities
+python-dateutil
+pytz
